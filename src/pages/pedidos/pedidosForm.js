@@ -55,6 +55,7 @@ function PedidoForm() {
     const formattedTime = pedido.hora_entrega + ":00"; // HH:MM:SS
 
     try {
+        // eslint-disable-next-line no-unused-vars
       const { data, error } = await supabase
         .from("pedidos")
         .insert([
