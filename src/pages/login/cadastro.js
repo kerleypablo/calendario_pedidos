@@ -4,6 +4,9 @@ import { supabase } from "../../services/supabase";
 import { toast } from "react-toastify";
 import "./login.css";
 
+/* eslint-disable no-unused-vars */
+
+
 function Cadastro() {
   const navigate = useNavigate();
   const location = useLocation();

@@ -6,6 +6,8 @@ import Header from "../../components/header/header";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css"; // Importação do CSS do Toastify
 
+/* eslint-disable no-unused-vars */
+
 function CadastroFuncionario() {
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
@@ -29,7 +31,7 @@ function CadastroFuncionario() {
       toast.error("Erro ao cadastrar funcionário.");
     } else {
       toast.success("Funcionário cadastrado com sucesso!");
-      navigate("/gerenciar-funcionarios"); // Após sucesso, redireciona para gerenciar funcionários
+      navigate("/gerenciar-funcionarios"); 
     }
   };
 

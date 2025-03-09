@@ -8,6 +8,8 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css"; // Importação do CSS do Toastify
 import "./gerenciarEmpresa.css";
 
+/* eslint-disable no-unused-vars */
+
 function GerenciarEmpresa() {
   const [empresa, setEmpresa] = useState(null);
   const [showModal, setShowModal] = useState(false);
