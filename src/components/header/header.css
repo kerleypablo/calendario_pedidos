@@ -1,0 +1,51 @@
+/* 🔹 Estilização da Navbar */
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+    background-color: #007bff; /* Azul padrão */
+    color: white;
+  }
+  
+  .navbar .btn {
+    background-color: white;
+    color: #007bff;
+    border: none;
+    font-size: 18px;
+    padding: 8px 12px;
+    cursor: pointer;
+    border-radius: 5px;
+    width: 53px;
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+  
+  .navbar .btn-danger {
+    background-color: #dc3545; /* Vermelho */
+    color: white;
+  }
+  
+  /* 🔹 Menu Lateral (Offcanvas) */
+  .offcanvas {
+    width: 30px;
+  }
+  
+  .offcanvas .nav-link {
+    font-size: 16px;
+    padding: 12px;
+    color: #333;
+    transition: background 0.3s;
+  }
+  
+  .offcanvas .nav-link:hover {
+    background-color: #f1f1f1;
+    color: #007bff;
+  }
+  
+  /* 🔹 Melhor organização dos botões */
+  .nav-buttons {
+    display: flex;
+    gap: 10px;
+  }
+  

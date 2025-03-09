@@ -1,0 +1,33 @@
+.empresa-container {
+  max-width: 600px;
+  margin: 30px auto;
+}
+
+.empresa-card {
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.empresa-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+}
+
+.empresa-actions button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100px;
+}
+
+.sem-empresa {
+  margin-top: 20px;
+}
+
+.sem-empresa button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}

@@ -1,4 +1,4 @@
-.login-container {
+.cadastro-funcionario-container {
   max-width: 400px;
   margin: 100px auto;
   padding: 20px;
@@ -8,11 +8,11 @@
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-.login-container h2 {
+.cadastro-funcionario-container h2 {
   margin-bottom: 15px;
 }
 
-.login-container input {
+.cadastro-funcionario-container input {
   width: 100%;
   padding: 10px;
   margin: 10px 0;
@@ -20,7 +20,7 @@
   border-radius: 5px;
 }
 
-.login-container button {
+.cadastro-funcionario-container button {
   width: 100%;
   padding: 10px;
   margin-top: 15px;
@@ -31,31 +31,6 @@
   cursor: pointer;
 }
 
-.login-container button:hover {
+.cadastro-funcionario-container button:hover {
   background: #0056b3;
-}
-
-.google-btn {
-  width: 100%;
-  padding: 10px;
-  margin-top: 15px;
-  background: #db4437;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.google-btn:hover {
-  background: #c1351d;
-}
-
-.criar-conta {
-  margin-top: 15px;
-  color: #007bff;
-  cursor: pointer;
-}
-
-.criar-conta:hover {
-  text-decoration: underline;
 }

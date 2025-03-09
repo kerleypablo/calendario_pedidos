@@ -1,0 +1,23 @@
+.navbar {
+    background-color: #007bff !important;
+  }
+  
+  .btn-danger {
+    background-color: #dc3545 !important;
+    border: none;
+  }
+  
+  .offcanvas-body {
+    padding: 20px;
+  }
+  
+  .nav-link {
+    font-size: 16px;
+    padding: 10px;
+    color: #333;
+  }
+  
+  .nav-link:hover {
+    background: #f1f1f1;
+  }
+  
