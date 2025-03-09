@@ -1,0 +1,72 @@
+/* Centralizar o Calendário */
+.calendar-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+  }
+  
+  /* Estilizar o pequeno indicador no calendário */
+  .has-pedido {
+    position: relative;
+  }
+  
+  .has-pedido::after {
+    content: "";
+    position: absolute;
+    bottom: 5px;
+    left: 50%;
+    width: 5px;
+    height: 5px;
+    background-color: red;
+    border-radius: 50%;
+    transform: translateX(-50%);
+  }
+
+  /* Estilo para o botão flutuante */
+.btn-floating {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    font-size: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+    z-index: 1000; /* Garante que fica acima de tudo */
+  }
+
+  .react-calendar__navigation {
+    color: black !important; /* Cor preta para os botões de navegação */
+  }
+  
+  .react-calendar__navigation button {
+    color: black !important; /* Botões de navegação (próximo e anterior) */
+    font-weight: bold;
+  }
+  
+  /* Ajustar cor dos números dos dias */
+  .react-calendar__tile {
+    color: black !important; /* Números dos dias em preto */
+    font-weight: bold;
+  }
+  
+  /* Ajustar cor do dia atual */
+  .react-calendar__tile--now {
+    background: #f0f0f0 !important; /* Destaca o dia atual */
+    color: black !important;
+  }
+  
+  /* Estilizar os dias que estão sendo clicados */
+  .react-calendar__tile:enabled:hover, .react-calendar__tile:enabled:focus {
+    background: #ddd !important;
+    color: black !important;
+  }
+  
+  
+  .react-calendar__month-view__days__day {
+    color: black;
+}

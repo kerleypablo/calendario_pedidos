@@ -1,0 +1,14 @@
+.login-container {
+    text-align: center;
+    margin-top: 50px;
+  }
+  
+  button {
+    padding: 10px 20px;
+    background-color: #4285F4;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
