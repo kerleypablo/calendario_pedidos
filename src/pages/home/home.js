@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { supabase } from "../../services/supabase";
-import { getMessaging, onMessage } from "firebase/messaging";
 import { enviarNotificacao } from "../../services/firebase";
 import { useNavigate } from "react-router-dom";
 import { Button, Container, Navbar, Offcanvas, Nav, Tabs, Tab } from "react-bootstrap";
