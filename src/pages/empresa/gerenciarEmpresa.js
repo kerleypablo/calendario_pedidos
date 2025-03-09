@@ -8,7 +8,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css"; // Importação do CSS do Toastify
 import "./gerenciarEmpresa.css";
 
-/* eslint-disable no-unused-vars */
+
 
 function GerenciarEmpresa() {
   const [empresa, setEmpresa] = useState(null);
@@ -22,6 +22,8 @@ function GerenciarEmpresa() {
       if (error || !userData.user) return;
 
       setUserId(userData.user.id); // Armazena o ID do usuário logado
+      console.log("Usuário logado:", userId);
+
 
       const { data: usuario } = await supabase
         .from("usuarios")

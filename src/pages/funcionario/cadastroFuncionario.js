@@ -32,6 +32,8 @@ function CadastroFuncionario() {
     } else {
       toast.success("Funcionário cadastrado com sucesso!");
       navigate("/gerenciar-funcionarios"); 
+      console.log("Usuário logado:", data);
+
     }
   };
 
