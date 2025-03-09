@@ -4,34 +4,55 @@ import { useNavigate } from "react-router-dom";
 import "./login.css";
 
 function Login() {
+// eslint-disable-next-line no-unused-vars
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
 
-  // Função para fazer login
+  // Função para fazer login com Google
   const handleLogin = async () => {
     const { data, error } = await loginGoogle();
+
     if (error) {
       console.error("Erro no login:", error);
       return;
     }
-    
-    // Após login, recarregar o usuário e redirecionar
-    await checkUserSession();
+
+    if (data?.session) {
+      await checkUserSession(); // Atualiza sessão e redireciona
+    }
   };
 
-  // Verifica se o usuário já está logado ao abrir a página
+  // Verifica se o usuário já está logado
   const checkUserSession = async () => {
-    const { data: { user } } = await supabase.auth.getUser();
-    if (user) {
-      setUser(user);
+    const { data, error } = await supabase.auth.getUser();
+
+    if (error) {
+      console.error("Erro ao buscar usuário:", error);
+      return;
+    }
+
+    if (data?.user) {
+      setUser(data.user);
       navigate("/home"); // Redireciona para Home
     }
   };
 
-  // Executa a verificação ao montar o componente
   useEffect(() => {
-    checkUserSession();
-  }, []);
+    const checkUserSession = async () => {
+        const { data, error } = await supabase.auth.getUser();
+    
+        if (error) {
+          console.error("Erro ao buscar usuário:", error);
+          return;
+        }
+    
+        if (data?.user) {
+          setUser(data.user);
+          navigate("/home");
+        }
+      };
+      checkUserSession(); 
+  }, [navigate]);
 
   return (
     <div className="login-container">
