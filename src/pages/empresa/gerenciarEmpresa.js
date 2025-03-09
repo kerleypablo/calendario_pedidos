@@ -22,7 +22,7 @@ function GerenciarEmpresa() {
       if (error || !userData.user) return;
 
       setUserId(userData.user.id); // Armazena o ID do usuário logado
-      console.log("Usuário logado:", userId);
+      
 
 
       const { data: usuario } = await supabase
@@ -40,13 +40,13 @@ function GerenciarEmpresa() {
         setEmpresa(empresaData);
       }
     };
-
+    
     buscarEmpresa();
   }, []);
 
   const handleExcluirEmpresa = async () => {
     if (!empresa) return;
-
+    console.log("Usuário logado:", userId);
     // Primeiro, remover o vínculo da empresa no usuário SEM excluir o usuário
     const { error: erroUsuario } = await supabase
       .from("usuarios")
