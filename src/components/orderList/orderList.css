@@ -1,0 +1,10 @@
+.order-list {
+    padding: 10px;
+    margin-top: 20px;
+  }
+  
+  .order-list h3 {
+    font-size: 18px;
+    margin-bottom: 15px;
+    color: #333;
+  }

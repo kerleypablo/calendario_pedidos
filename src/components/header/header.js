@@ -50,6 +50,7 @@ function Header() {
         </Offcanvas.Header>
         <Offcanvas.Body>
           <Nav className="flex-column">
+            <Nav.Link onClick={() => navigate("/home")}>Home</Nav.Link>
             <Nav.Link onClick={() => navigate("/perfil")}>Perfil</Nav.Link>
             <Nav.Link onClick={() => navigate("/configuracoes")}>Configurações</Nav.Link>
 

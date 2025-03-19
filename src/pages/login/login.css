@@ -59,3 +59,17 @@
 .criar-conta:hover {
   text-decoration: underline;
 }
+
+.logoemplogin {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#logoemp {
+  width: 80px; 
+  height: 80px; 
+  border-radius: 50%; 
+  object-fit: cover; 
+  border: 2px solid #ccc; 
+}

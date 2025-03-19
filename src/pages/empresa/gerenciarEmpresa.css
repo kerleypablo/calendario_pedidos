@@ -31,3 +31,30 @@
   align-items: center;
   gap: 8px;
 }
+
+.upload-container {
+  text-align: center;
+  margin-top: 10px;
+}
+
+.upload-container input {
+  margin-top: 5px;
+}
+
+.logo-preview {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-top: 10px;
+}
+
+.empresa-logo {
+  display: block;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin: 10px auto;
+}
+

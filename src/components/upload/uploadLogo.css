@@ -1,0 +1,12 @@
+.upload-container {
+    text-align: center;
+    padding: 20px;
+  }
+  
+  .logo-preview {
+    width: 150px;
+    height: auto;
+    border-radius: 10px;
+    margin: 10px 0;
+  }
+  

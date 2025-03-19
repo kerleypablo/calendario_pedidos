@@ -1,141 +1,106 @@
-import React, { useState, useEffect } from "react";
-import { supabase } from "../../services/supabase";
-import { useNavigate } from "react-router-dom";
-import { Button, Container, Tabs, Tab } from "react-bootstrap";
-import Calendar from "react-calendar";
-import "react-calendar/dist/Calendar.css";
-import "./home.css";
-import Header from "../../components/header/header";
+"use client"
 
-function Home() {
-  const [pedidos, setPedidos] = useState([]);
-  const [selectedDate, setSelectedDate] = useState(null);
-  const [datasComPedidos, setDatasComPedidos] = useState([]);
-  const [activeTab, setActiveTab] = useState("semana");
-  const [empresa, setEmpresa] = useState(null);
-  const navigate = useNavigate();
+import { useState, useEffect } from "react"
+import { supabase } from "../../services/supabase"
+import { useNavigate } from "react-router-dom"
+import { startOfWeek, endOfWeek, format, parseISO } from "date-fns"
+import { ptBR } from "date-fns/locale"
+import Calendar from "../../components/Calendar/calendar"
+import PedidosList from "../../components/pedidosList/pedidosList"
+import BottomNavBar from "../../components/buttomNav/buttomNavBar"
+import "./home.css"
+
+const Home = () => {
+  const [pedidosSemana, setPedidosSemana] = useState([])
+  const [pedidosDia, setPedidosDia] = useState([])
+  const [selectedDate, setSelectedDate] = useState(format(new Date(), "yyyy-MM-dd"))
+  const [loading, setLoading] = useState(true)
+  const navigate = useNavigate()
 
   useEffect(() => {
-    const buscarEmpresa = async () => {
-      const { data: userData } = await supabase.auth.getUser();
-      if (!userData.user) return;
+    checkUser()
+    fetchPedidosSemana()
+  }, [])
 
-      const { data: usuario } = await supabase
-        .from("usuarios")
-        .select("empresa_id")
-        .eq("id", userData.user.id)
-        .single();
+  useEffect(() => {
+    fetchPedidosDia(selectedDate)
+  }, [selectedDate])
 
-      if (usuario?.empresa_id) {
-        const { data: empresaData } = await supabase
-          .from("empresas")
-          .select("nome")
-          .eq("id", usuario.empresa_id)
-          .single();
-        setEmpresa(empresaData?.nome);
-
-        // Salva no localStorage para facilitar requisições futuras
-        localStorage.setItem("empresa_id", usuario.empresa_id);
-        buscarPedidos(usuario.empresa_id);
-      }
-    };
-
-    buscarEmpresa();
-  }, []);
-
-  const buscarPedidos = async (empresaId) => {
-    const { data, error } = await supabase
-      .from("pedidos")
-      .select("*")
-      .eq("empresa_id", empresaId);
-
-    if (error) {
-      console.error("Erro ao buscar pedidos:", error);
-    } else {
-      setPedidos(data);
-      setDatasComPedidos(data.map((pedido) => pedido.data_entrega));
+  const checkUser = async () => {
+    const {
+      data: { user },
+    } = await supabase.auth.getUser()
+    if (!user) {
+      navigate("/login")
     }
-  };
+  }
 
-  const handleDateClick = (date) => {
-    setSelectedDate(date);
-    setActiveTab("dia");
-  };
+  const fetchPedidosSemana = async () => {
+    try {
+      setLoading(true)
+      const today = new Date()
+      const start = startOfWeek(today, { weekStartsOn: 0 })
+      const end = endOfWeek(today, { weekStartsOn: 0 })
 
-  const pedidosDoDia = pedidos.filter((pedido) =>
-    pedido.data_entrega === selectedDate?.toISOString().split("T")[0]
-  );
+      const startDate = format(start, "yyyy-MM-dd")
+      const endDate = format(end, "yyyy-MM-dd")
 
-  const marcarDatasNoCalendario = ({ date }) => {
-    return datasComPedidos.includes(date.toISOString().split("T")[0])
-      ? "has-pedido"
-      : "";
-  };
+      const { data, error } = await supabase
+        .from("pedidos")
+        .select("*")
+        .gte("data_entrega", startDate)
+        .lte("data_entrega", endDate)
+        .order("data_entrega", { ascending: true })
+
+      if (error) throw error
+      setPedidosSemana(data || [])
+    } catch (error) {
+      console.error("Erro ao buscar pedidos da semana:", error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const fetchPedidosDia = async (date) => {
+    try {
+      const { data, error } = await supabase
+        .from("pedidos")
+        .select("*")
+        .eq("data_entrega", date)
+        .order("horario_entrega", { ascending: true })
+
+      if (error) throw error
+      setPedidosDia(data || [])
+    } catch (error) {
+      console.error("Erro ao buscar pedidos do dia:", error)
+    }
+  }
+
+  const handleDayClick = (date) => {
+    setSelectedDate(date)
+  }
 
   return (
-    <Container fluid className="p-0">
-      {/* 🔥 Header separado */}
-      <Header />
+    <div className="home-container">
+      <div className="home-content">
+        <h1>Calendário de Pedidos</h1>
 
-      {/* Nome da empresa cadastrada */}
-      {empresa && (
-        <div className="empresa-header">
-          📌 Empresa: <strong>{empresa}</strong>
-        </div>
-      )}
+        <Calendar onDayClick={handleDayClick} />
 
-      {/* Calendário */}
-      <Container className="text-center mt-3">
-        <div className="calendar-wrapper">
-          <Calendar
-            onChange={handleDateClick}
-            value={selectedDate}
-            tileClassName={marcarDatasNoCalendario}
+        {selectedDate && (
+          <PedidosList
+            pedidos={pedidosDia}
+            title={`Pedidos para ${format(parseISO(selectedDate), "dd/MM/yyyy", { locale: ptBR })}`}
           />
-        </div>
-      </Container>
+        )}
 
-      {/* Abas de pedidos */}
-      <Container className="mt-3">
-        <Tabs activeKey={activeTab} onSelect={(tab) => setActiveTab(tab)} className="mb-3">
-          <Tab eventKey="semana" title="Pedidos da Semana">
-            {pedidos.length > 0 ? (
-              <ul className="list-group">
-                {pedidos.map((pedido) => (
-                  <li key={pedido.id} className="list-group-item">
-                    <strong>{pedido.titulo}</strong> - {pedido.data_entrega}
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p className="text-muted text-center">Nenhum pedido nesta semana.</p>
-            )}
-          </Tab>
+        <PedidosList pedidos={pedidosSemana} title="Pedidos da Semana" />
+      </div>
 
-          <Tab eventKey="dia" title="Pedidos do Dia">
-            {selectedDate ? (
-              pedidosDoDia.length > 0 ? (
-                <ul className="list-group">
-                  {pedidosDoDia.map((pedido) => (
-                    <li key={pedido.id} className="list-group-item">
-                      <strong>{pedido.titulo}</strong> - {pedido.hora_entrega}
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <p className="text-muted text-center">Nenhum pedido para esta data.</p>
-              )
-            ) : (
-              <p className="text-muted text-center">Clique em um dia no calendário para ver os pedidos.</p>
-            )}
-          </Tab>
-        </Tabs>
-      </Container>
-
-      {/* Botão flutuante para criar pedido */}
-      <Button className="btn-floating" variant="success" onClick={() => navigate("/novo-pedido")}>+</Button>
-    </Container>
-  );
+      <BottomNavBar />
+    </div>
+  )
 }
 
-export default Home;
+export default Home
+

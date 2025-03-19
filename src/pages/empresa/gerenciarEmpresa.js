@@ -1,56 +1,29 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+import { useEmpresa } from "../../context/EmpresaContext";
+import { useAuth } from "../../context/AuthContext";
 import { supabase } from "../../services/supabase";
 import { useNavigate } from "react-router-dom";
 import { Container, Card, Button, Modal } from "react-bootstrap";
 import Header from "../../components/header/header";
 import { FaEdit, FaTrash, FaPlus } from "react-icons/fa";
 import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css"; // Importação do CSS do Toastify
+import "react-toastify/dist/ReactToastify.css";
+import Loading from "../../components/loading/loading";
+import UploadLogo from "../../components/upload/uploadLogo";
 import "./gerenciarEmpresa.css";
 
-
-
 function GerenciarEmpresa() {
-  const [empresa, setEmpresa] = useState(null);
+  const { empresa, setEmpresa, loading: loadingEmpresa } = useEmpresa();
+  const { usuario, loading: loadingUser } = useAuth();
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
-  const [userId, setUserId] = useState(null);
-
-  useEffect(() => {
-    const buscarEmpresa = async () => {
-      const { data: userData, error } = await supabase.auth.getUser();
-      if (error || !userData.user) return;
-
-      setUserId(userData.user.id); // Armazena o ID do usuário logado
-      
-
-
-      const { data: usuario } = await supabase
-        .from("usuarios")
-        .select("empresa_id")
-        .eq("id", userData.user.id)
-        .single();
-
-      if (usuario?.empresa_id) {
-        const { data: empresaData } = await supabase
-          .from("empresas")
-          .select("*")
-          .eq("id", usuario.empresa_id)
-          .single();
-        setEmpresa(empresaData);
-      }
-    };
-    
-    buscarEmpresa();
-  }, []);
 
   const handleExcluirEmpresa = async () => {
     if (!empresa) return;
-    console.log("Usuário logado:", userId);
-    // Primeiro, remover o vínculo da empresa no usuário SEM excluir o usuário
+
     const { error: erroUsuario } = await supabase
       .from("usuarios")
-      .update({ empresa_id: null }) // Apenas atualiza, sem deletar
+      .update({ empresa_id: null })
       .eq("empresa_id", empresa.id);
 
     if (erroUsuario) {
@@ -58,7 +31,6 @@ function GerenciarEmpresa() {
       return;
     }
 
-    // Agora, excluir a empresa do banco
     const { error: erroEmpresa } = await supabase
       .from("empresas")
       .delete()
@@ -70,9 +42,9 @@ function GerenciarEmpresa() {
     }
 
     setEmpresa(null);
+    sessionStorage.removeItem("empresa");
     setShowModal(false);
 
-    // 🔥 Exibir toast de sucesso
     toast.success("Empresa excluída com sucesso!", {
       position: "top-right",
       autoClose: 3000,
@@ -80,7 +52,6 @@ function GerenciarEmpresa() {
       closeOnClick: true,
       pauseOnHover: true,
       draggable: true,
-      progress: undefined,
       theme: "light",
     });
   };
@@ -91,12 +62,25 @@ function GerenciarEmpresa() {
       <Container className="empresa-container">
         <h2 className="text-center">Gerenciar Empresa</h2>
 
-        {empresa ? (
+        {loadingUser || loadingEmpresa ? (
+          <Loading />
+        ) : empresa ? (
           <Card className="empresa-card">
             <Card.Body>
               <Card.Title>{empresa.nome}</Card.Title>
-              <Card.Text><strong>CNPJ:</strong> {empresa.cnpj || "Não informado"}</Card.Text>
-              <Card.Text><strong>Endereço:</strong> {empresa.endereco || "Não informado"}</Card.Text>
+              {empresa?.logo_url ? (
+                 <img src={empresa.logo_url} alt="Logo da Empresa" className="empresa-logo" />
+              ) : (
+                  <p className="text-muted">Nenhuma logo cadastrada</p>
+                )}
+              <Card.Text>
+                <strong>CNPJ:</strong> {empresa.cnpj || "Não informado"}
+              </Card.Text>
+              <Card.Text>
+                <strong>Endereço:</strong> {empresa.endereco || "Não informado"}
+              </Card.Text>
+
+              <UploadLogo /> {/* 🔥 Adicionando o componente de upload */}
 
               <div className="empresa-actions">
                 <Button variant="warning" onClick={() => navigate(`/editar-empresa/${empresa.id}`)}>
@@ -118,7 +102,6 @@ function GerenciarEmpresa() {
         )}
       </Container>
 
-      {/* Modal de Confirmação para Excluir */}
       <Modal show={showModal} onHide={() => setShowModal(false)}>
         <Modal.Header closeButton>
           <Modal.Title>Confirmar Exclusão</Modal.Title>

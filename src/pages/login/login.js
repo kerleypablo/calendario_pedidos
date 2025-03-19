@@ -97,7 +97,9 @@ function Login() {
   return (
     <div className="login-container">
       {loading && <Loading />} {/* ✅ Exibe o loading enquanto `loading` for true */}
-
+      <div className="logoemplogin">
+        <img src="files/images/logoemp.webp" id="logoemp" />
+      </div>
       <h2>Login</h2>
       <input
         type="email"
