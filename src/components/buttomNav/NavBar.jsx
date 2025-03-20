@@ -1,8 +1,8 @@
 import { Link, useLocation } from "react-router-dom"
 import { Home, Calendar, User, Plus, MessageSquare } from "lucide-react"
-import "./bottomNavBar.css"
+import "./NavBar.css"
 
-const BottomNavBar = () => {
+const NavBar = () => {
   const location = useLocation()
 
   const isActive = (path) => {
@@ -27,9 +27,9 @@ const BottomNavBar = () => {
         </Link>
       </div>
 
-      <Link to="/mensagens" className={`nav-item ${isActive("/mensagens") ? "active" : ""}`}>
+      <Link to="/empresa" className={`nav-item ${isActive("/mensagens") ? "active" : ""}`}>
         <MessageSquare size={20} />
-        <span>Mensagens</span>
+        <span>Empresa</span>
       </Link>
 
       <Link to="/perfil" className={`nav-item ${isActive("/perfil") ? "active" : ""}`}>
@@ -40,5 +40,5 @@ const BottomNavBar = () => {
   )
 }
 
-export default BottomNavBar
+export default NavBar
 

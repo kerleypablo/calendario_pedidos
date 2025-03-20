@@ -1,42 +1,140 @@
-import React from "react";
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-import Home from "../pages/home/home";
-import Login from "../pages/login/login";
-import CadastrarSenha from "../pages/login/criarSenha"; // 🔥 Nova Tela
-import CadastroEmpresa from "../pages/empresa/cadastroEmpresa";
-import CadastroUsuario from "../pages/funcionario/cadastroFuncionario";
-import GerenciarEmpresa from "../pages/empresa/gerenciarEmpresa";
-import GerenciarFuncionarios from "../pages/funcionario/gerenciarFuncionarios"; // 🔥 Nova Tela
-import PedidoForm from "../pages/pedidos/pedidosForm";
-import { supabase } from "../services/supabase";
-import Cadastro from "../pages/login/cadastro";
+"use client"
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom"
+import { useAuth } from "../context/AuthContext"
+import Login from "../pages/login/login"
+import Cadastro from "../pages/login/cadastro"
+import CriarSenha from "../pages/login/criarSenha"
+import Home from "../pages/home/Home"
+import Calendario from "../pages/calendario/Calendario"
+import PedidoForm from "../pages/pedidos/PedidosForm"
+import GerenciarEmpresa from "../pages/empresa/GerenciarEmpresa"
+import CadastroEmpresa from "../pages/empresa/CadastroEmpresa"
+import ListaFuncionarios from "../pages/funcionario/ListaFuncionarios"
+import CadastroFuncionario from "../pages/funcionario/CadastroFuncionarios"
 
-// 🔒 Função para proteger rotas privadas (exige autenticação)
+// Componente para rotas protegidas
 const PrivateRoute = ({ children }) => {
-  const session = supabase.auth.getSession(); // 🔥 Ajuste: Verifica se há sessão ativa
-  return session ? children : <Navigate to="/" />;
-};
+  const { usuario, loading } = useAuth()
 
-function AppRoutes() {
+  if (loading) {
+    return <div>Carregando...</div>
+  }
+
+  return usuario ? children : <Navigate to="/" />
+}
+
+// Componente para rotas de admin
+const AdminRoute = ({ children }) => {
+  const { usuario, loading } = useAuth()
+
+  if (loading) {
+    return <div>Carregando...</div>
+  }
+
+  if (!usuario) {
+    return <Navigate to="/" />
+  }
+
+  const isAdmin = usuario.user_metadata?.isAdmin || false
+
+  return isAdmin ? children : <Navigate to="/home" />
+}
+
+const AppRoutes = () => {
   return (
     <Router>
       <Routes>
-        {/* 🔹 Rotas Públicas */}
+        {/* Rotas públicas */}
         <Route path="/" element={<Login />} />
-        <Route path="/cadastrar-senha" element={<CadastrarSenha />} />
         <Route path="/cadastro" element={<Cadastro />} />
+        <Route path="/criar-senha" element={<CriarSenha />} />
 
-        {/* 🔹 Rotas Privadas */}
-        <Route path="/home" element={<PrivateRoute><Home /></PrivateRoute>} />
-        <Route path="/cadastro-empresa" element={<PrivateRoute><CadastroEmpresa /></PrivateRoute>} />
-        <Route path="/cadastro-usuario" element={<PrivateRoute><CadastroUsuario /></PrivateRoute>} />
-        <Route path="/gerenciar-empresa" element={<PrivateRoute><GerenciarEmpresa /></PrivateRoute>} />
-        <Route path="/gerenciar-funcionarios" element={<PrivateRoute><GerenciarFuncionarios /></PrivateRoute>} />
-        <Route path="/novo-pedido" element={<PrivateRoute><PedidoForm /></PrivateRoute>} />
-        <Route path="*" element={<Navigate to="/" />} />
+        {/* Rotas protegidas */}
+        <Route
+          path="/home"
+          element={
+            <PrivateRoute>
+              <Home />
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path="/calendario"
+          element={
+            <PrivateRoute>
+              <Calendario />
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path="/novo-pedido"
+          element={
+            <PrivateRoute>
+              <PedidoForm />
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path="/editar-pedido/:id"
+          element={
+            <PrivateRoute>
+              <PedidoForm />
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path="/empresa"
+          element={
+            <PrivateRoute>
+              <GerenciarEmpresa />
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path="/cadastro-empresa"
+          element={
+            <PrivateRoute>
+              <CadastroEmpresa />
+            </PrivateRoute>
+          }
+        />
+
+        {/* Rotas de admin */}
+        <Route
+          path="/funcionarios"
+          element={
+            <AdminRoute>
+              <ListaFuncionarios />
+            </AdminRoute>
+          }
+        />
+
+        <Route
+          path="/cadastro-funcionario"
+          element={
+            <AdminRoute>
+              <CadastroFuncionario />
+            </AdminRoute>
+          }
+        />
+
+        <Route
+          path="/editar-funcionario/:id"
+          element={
+            <AdminRoute>
+              <CadastroFuncionario />
+            </AdminRoute>
+          }
+        />
       </Routes>
     </Router>
-  );
+  )
 }
 
-export default AppRoutes;
+export default AppRoutes
+

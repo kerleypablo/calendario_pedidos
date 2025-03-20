@@ -1,0 +1,20 @@
+.calendario-container {
+    padding: 16px;
+    padding-bottom: 80px; /* Espaço para a barra de navegação */
+    background-color: #f5f5f5;
+    min-height: 100vh;
+  }
+  
+  .calendario-content {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  
+  .calendario-content h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+    font-size: 1.5rem;
+  }
+  
+  

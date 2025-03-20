@@ -5,7 +5,7 @@ import { Button, Container, Form, Alert } from "react-bootstrap";
 import Header from "../../components/header/header";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css"; // Importação do CSS do Toastify
-import "./cadastroEmpresa.css";
+import "./CadastroEmpresa.css";
 
 function CadastroEmpresa() {
   const [empresaNome, setEmpresaNome] = useState("");
