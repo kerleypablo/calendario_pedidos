@@ -6,7 +6,7 @@ import { useNavigate, useParams } from "react-router-dom"
 import { Form, Button, Container, Card, Row, Col, Table, Alert, Spinner } from "react-bootstrap"
 import { toast } from "react-toastify"
 import Navbar from "../../components/buttomNav/NavBar"
-import "./pedidosform.css"
+import "./PedidosForm.css"
 
 function PedidoForm() {
   const navigate = useNavigate()

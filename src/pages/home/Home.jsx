@@ -6,7 +6,7 @@ import { supabase } from "../../services/supabase"
 import { useEmpresa } from "../../context/EmpresaContext"
 import { Calendar, ShoppingBag, Users, Settings } from "lucide-react"
 import BottomNavBar from "../../components/buttomNav/NavBar"
-import "./home.css"
+import "./Home.css"
 
 const Home = () => {
   const navigate = useNavigate()

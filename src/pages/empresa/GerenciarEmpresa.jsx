@@ -9,7 +9,7 @@ import { Container, Card, Button, Modal, Form, Row, Col, Spinner, Alert } from "
 import { FaEdit, FaTrash, FaPlus, FaSave, FaUpload } from "react-icons/fa"
 import { toast } from "react-toastify"
 import Navbar from "../../components/buttomNav/NavBar"
-import "./gerenciarEmpresa.css"
+import "./GerenciarEmpresa.css"
 
 function GerenciarEmpresa() {
   const { empresa, setEmpresa, loading: loadingEmpresa } = useEmpresa()
