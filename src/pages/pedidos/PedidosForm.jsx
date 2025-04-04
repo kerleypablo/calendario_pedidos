@@ -179,6 +179,8 @@ function PedidoForm() {
         if (error) throw error
         result = data
         toast.success("Pedido criado com sucesso!")
+        console.log(result);
+        
       }
 
       // Verificar se o cliente já existe, se não, criar

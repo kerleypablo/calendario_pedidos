@@ -56,6 +56,8 @@ const Home = () => {
         .select("id")
         .gte("data_entrega", formattedOneWeekAgo)
         .lte("data_entrega", formattedToday)
+        console.log(pedidosSemana,loading);
+
 
       if (errorSemana) throw errorSemana
 

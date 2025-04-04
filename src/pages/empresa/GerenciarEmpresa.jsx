@@ -40,6 +40,7 @@ function GerenciarEmpresa() {
         email: empresa.email || "",
         instagram: empresa.instagram || "",
       })
+      console.log(logoPreview);
 
       if (empresa.logo_url) {
         setLogoPreview(empresa.logo_url)
